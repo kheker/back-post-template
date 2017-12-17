@@ -9,7 +9,7 @@ const ProposalPostSchema = new Schema({
     {
       message:{
         type:String,
-        maxlenght:[10, 'Tu propuesta debe tener al menos 10 caracteres'],
+        maxlength:[10, 'Tu propuesta debe tener al menos 10 caracteres'],
         required:[true, 'Escribe tu propuesta']
       },
       postId:{

@@ -12,7 +12,7 @@ export async function register(req, res) {
     await Proposal.create({userId:user._id});
     return res.status(HTTPStatus.CREATED).json(user.toAuthJSON());
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({error:true, message:'Error al crear usuario'});
+    return res.status(HTTPStatus.BAD_REQUEST).json({e, error:true, message:'Error al crear usuario'});
   }
 }
 
