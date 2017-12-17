@@ -55,6 +55,11 @@ const UserSchema = new Schema({
     uid:String,
     provider:String,
   },
+  worksFinish:{
+    type:Number,
+    default: 0
+  },
+
 },{timestamp:true});
 
 UserSchema.plugin(uniqueValidator, {
@@ -99,7 +104,8 @@ UserSchema.methods = {
       fullName: this.fullName,
       avatar: this.avatar,
       skills: this.skills,
-      biography: this.biography
+      biography: this.biography,
+      worksFinish: this.worksFinish,
     }
   },
 };

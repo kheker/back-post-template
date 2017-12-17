@@ -28,7 +28,10 @@ const PostSchema = new Schema({
     ref: 'User',
     required: true
   },
-    
+  proposals:{
+    type: Number,
+    default:0,
+  }
 },{timestamp: true})
 
 PostSchema.statics = {

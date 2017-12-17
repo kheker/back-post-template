@@ -1,5 +1,6 @@
 import HTTPStatus from 'http-status';
 import User from './user.model';
+import Proposal from '../proposal/proposal.model';
 
 export async function register(req, res) {
   try {
@@ -8,6 +9,7 @@ export async function register(req, res) {
       password:req.body.password
     })
     const user = await User.create(body);
+    await Proposal.create({userId:user._id});
     return res.status(HTTPStatus.CREATED).json(user.toAuthJSON());
   } catch (e) {
     return res.status(HTTPStatus.BAD_REQUEST).json({error:true, message:'Error al crear usuario'});
