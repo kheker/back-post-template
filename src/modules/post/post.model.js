@@ -19,18 +19,20 @@ const PostSchema = new Schema({
   },
   tags:[],
   fixedValue:{
-    mini:Number,
-    maxi:Number,
+    type:Number,
+    required: [true, 'Ingresa el presupuesto para tu proyecto'],
+    min:[1,'El presupuesto debe estar por encima de 1$']
   },
   owner:{
     type: Schema.Types.ObjectId, 
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
     
 },{timestamp: true})
 
 PostSchema.statics = {
-  createEvent(args, user) {
+  createPost(args, user) {
     return this.create({
       ...args,
       owner: user,
