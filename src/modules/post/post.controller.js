@@ -65,16 +65,20 @@ export async function addProposal(req, res){
   try {
     const offerts = await Proposal.findOne({userId:req.user.id});
     //console.log(offerts.proposals);
-    if (offerts.proposals.some(t => t.postId.equals(req.params.id))) {
+    const post = await Post.findById(req.params.id);
+    if (offerts.proposals.some(t => t.postId.equals(post._id))) {
       return res.status(HTTPStatus.BAD_REQUEST).json({error:true, message:'Ya has enviado una propuesta a este post'});
+    }else{
+      const offer = {
+        bid: req.body.bid,
+        message: req.body.message,
+        postId: req.params.id
+      }
+      offerts.proposals.push(offer);
+      const newPost = await Post.incProposalCount(post._id);
+      await offerts.save();
+      return res.status(HTTPStatus.CREATED).json({offerts:offerts,newPost});
     }
-    const offer = {
-      message: req.body.message,
-      postId: req.params.id
-    }
-    offerts.proposals.push(offer);
-    await offerts.save();
-    return res.status(HTTPStatus.CREATED).json(offerts);
   } catch (e) {
     return res.status(HTTPStatus.BAD_REQUEST).json(e);
   }

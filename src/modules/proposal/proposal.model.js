@@ -7,6 +7,11 @@ const ProposalPostSchema = new Schema({
   },
   proposals:[
     {
+      bid:{
+        type:Number,
+        required:[true, 'Has tu oferta'],
+        min:[1, 'Tu oferta debe ser de al menos 1$']
+      },
       message:{
         type:String,
         minlength:[10, 'Tu propuesta debe tener al menos 10 caracteres'],
@@ -19,7 +24,7 @@ const ProposalPostSchema = new Schema({
     }
   ],
 
-});
+},{timestamps:true});
 
 ProposalPostSchema.index({userId: 1}, {unique: true})
 export default mongoose.model('Proposal',ProposalPostSchema);

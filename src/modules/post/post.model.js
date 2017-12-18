@@ -41,6 +41,14 @@ PostSchema.statics = {
       owner: user,
     });
   },
+
+  incProposalCount(postId){
+    return this.findByIdAndUpdate(postId,{$inc:{proposals: 1} },{new:true});
+  },
+
+  decProposalCount(postId){
+    return this.findByIdAndUpdate(postId,{$inc:{proposals: -1} },{new:true});
+  },
 };
 
 export default mongoose.model('Post',PostSchema);

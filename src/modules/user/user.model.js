@@ -60,7 +60,7 @@ const UserSchema = new Schema({
     default: 0
   },
 
-},{timestamp:true});
+},{timestamps:true});
 
 UserSchema.plugin(uniqueValidator, {
   message: '{VALUE} ya ha sido registrado',
