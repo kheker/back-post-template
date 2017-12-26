@@ -6,7 +6,8 @@ export async function register(req, res) {
   try {
     const body = new User({
       email:req.body.email,
-      password:req.body.password
+      password:req.body.password,
+      fullName: req.body.fullName,
     })
     const user = await User.create(body);
     await Proposal.create({userId:user._id});
@@ -45,5 +46,21 @@ export async function getAllUsers(req, res) {
     return res.status(HTTPStatus.OK).json(users);
   } catch (e) {
     return res.status(HTTPStatus.BAD_REQUEST).json({error:true, message:'Error al buscar usuarios'});
+  }
+}
+
+export async function editPerfil(req, res) {
+  try {
+    const newPerfil = {
+      fullName: req.body.fullName,
+      avatar: req.body.avatar,
+      biography: req.body.biography,
+      skills: req.body.skills,
+      country: req.body.country
+    }
+    const user = await User.findByIdAndUpdate(req.user.id,newPerfil,{new:true});
+    return res.status(HTTPStatus.ACCEPTED).json(user);
+  } catch (e) {
+    return res.status(HTTPStatus.BAD_REQUEST).json({e,error:true, message:'Error al editar intenta de nuevo'});
   }
 }
