@@ -34,6 +34,7 @@ const UserSchema = new Schema({
   fullName:{
     type: String,
     minlength: [3, 'Nombre debe tener al menos 3 caracteres'],
+    required: [true, 'Ingresa tu nombre completo']
   },
   biography:{
     type:String,
@@ -59,7 +60,9 @@ const UserSchema = new Schema({
     type:Number,
     default: 0
   },
-
+  country: {
+    type:String,
+  },
 },{timestamps:true});
 
 UserSchema.plugin(uniqueValidator, {
