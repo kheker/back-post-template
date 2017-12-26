@@ -27,6 +27,6 @@ const CommentSchema = new Schema({
   },
 },{timestamps:true});
 
-CommentSchema.index({userId: 2}, {unique: true});
+CommentSchema.index({postRefId: 2}, {unique: true});
 
 export default mongoose.model('Comment', CommentSchema);

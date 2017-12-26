@@ -31,6 +31,11 @@ const PostSchema = new Schema({
   proposals:{
     type: Number,
     default:0,
+  },
+  status:{
+    type:String,
+    enum:['disponible', 'evaluando propuestas', 'finalizado'],
+    default:'disponible',
   }
 },{timestamp: true})
 

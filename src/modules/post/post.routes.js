@@ -7,6 +7,7 @@ const routes = new Router();
 
 routes.post('/agregar-post', authJwt , validate(postValidation.addPost) ,postControllers.addPost);
 routes.post('/proposal/:id', authJwt, postControllers.addProposal);
+routes.put('/hireUser/:id', authJwt, postControllers.hireUser);
 routes.put('/edit/:id', authJwt, postControllers.editPost);
 routes.get('/:id', postControllers.getPost);
 routes.get('/',postControllers.getAll);
