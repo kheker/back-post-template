@@ -109,6 +109,7 @@ UserSchema.methods = {
       skills: this.skills,
       biography: this.biography,
       worksFinish: this.worksFinish,
+      country: this.country,
     }
   },
 };

@@ -7,6 +7,16 @@ export default {
     body:{
       email: Joi.string().email().required(),
       password: Joi.string().regex(passwordReg).required(),
+      fullName: Joi.string().required(),
+    },
+  },
+  perfil:{
+    body:{
+      fullName:Joi.string().required(),
+      avatar: Joi.string().required(),
+      biography: Joi.string().required(),
+      skills: Joi.string().required(),
+      country: Joi.string().required()
     },
   },
 };
