@@ -2,17 +2,12 @@ import HTTPStatus from 'http-status';
 import Post from './post.model';
 import Proposal from '../proposal/proposal.model';
 import Comment from '../comments/comment.model';
+import filteredBody from '../../utils/filteredBody';
+import { SchemaList } from '../../config/constants';
 
 export async function addPost(req, res) {
   try {
-    const body = {
-      category: req.body.category,
-      title: req.body.title,
-      description: req.body.description,
-      tags: req.body.tags,
-      fixedValue: req.body.fixedValue,
-      owner: req.user.id,
-    };
+    const body = filteredBody(req.body, SchemaList.posts.create)
     const post = await Post.createPost(body, req.user.id);
     await Comment.create({ postRefId: post._id, userRef: req.user.id });
     return res.status(HTTPStatus.CREATED).json(post);
@@ -41,12 +36,13 @@ export async function getPost(req, res) {
 
 export async function editPost(req, res) {
   try {
+    const body = filteredBody(req.body, SchemaList.posts.update)
     const post = await Post.findById(req.params.id);
     if (post.owner.toString() !== req.user.id.toString()) {
       return res.status(HTTPStatus.UNAUTHORIZED).json({ error: true, messaje: 'No eres el propietario del post' });
     }
-    Object.keys(req.body).forEach((key) => {
-      post[key] = req.body[key];
+    Object.keys(body).forEach((key) => {
+      post[key] = body[key];
     });
     return res.status(HTTPStatus.OK).json(await post.save());
   } catch (e) {

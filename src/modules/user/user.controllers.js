@@ -1,14 +1,12 @@
 import HTTPStatus from 'http-status';
 import User from './user.model';
 import Proposal from '../proposal/proposal.model';
+import filteredBody from '../../utils/filteredBody';
+import { SchemaList } from '../../config/constants';
 
 export async function register(req, res) {
   try {
-    const body = new User({
-      email: req.body.email,
-      password: req.body.password,
-      fullName: req.body.fullName,
-    });
+    const body = filteredBody(req.body, SchemaList.users.create);
     const user = await User.create(body);
     await Proposal.create({ userId: user._id });
     return res.status(HTTPStatus.CREATED).json(user.toAuthJSON());
@@ -51,14 +49,8 @@ export async function getAllUsers(req, res) {
 
 export async function editPerfil(req, res) {
   try {
-    const newPerfil = {
-      fullName: req.body.fullName,
-      avatar: req.body.avatar,
-      biography: req.body.biography,
-      skills: req.body.skills,
-      country: req.body.country,
-    };
-    const user = await User.findByIdAndUpdate(req.user.id, newPerfil, { new: true });
+    const body = filteredBody(req.body, SchemaList.users.create);
+    const user = await User.findByIdAndUpdate(req.user.id, body, { new: true });
     return res.status(HTTPStatus.ACCEPTED).json(user);
   } catch (e) {
     return res.status(HTTPStatus.BAD_REQUEST).json({ e, error: true, message: 'Error al editar intenta de nuevo' });
