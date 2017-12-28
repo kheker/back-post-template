@@ -12,16 +12,16 @@ middlewares(app);
 routes(app);
 
 
-app.listen(constants.PORT, err => {
-  if (err){
+app.listen(constants.PORT, (err) => {
+  if (err) {
     throw err;
-  } else{
+  } else {
     console.log(`
     Server corriendo en el puerto : ${constants.PORT}
     ---
     corriendo en ${process.env.NODE_ENV}
     ---
     mi primer backend!
-    `)
+    `);
   }
-})
+});

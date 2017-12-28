@@ -1,32 +1,32 @@
 import mongoose, { Schema } from 'mongoose';
 
 const CommentSchema = new Schema({
-  postRefId:{
-    type:Schema.Types.ObjectId,
-    ref:'Post',
-    required:true
+  postRefId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
+    required: true,
   },
-  userRef:{
-    type:Schema.Types.ObjectId,
-    ref: 'User'
+  userRef: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
-  hireUserId:{
-    type:Schema.Types.ObjectId,
-    ref: 'User'
+  hireUserId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
-  eval:{
-    type:Number,
-    required:[true, 'Califica al freelancer'],
-    min:true,
-    default:0,
+  eval: {
+    type: Number,
+    required: [true, 'Califica al freelancer'],
+    min: true,
+    default: 0,
   },
   message: {
     type: String,
-    required:[true, 'Has un comentario'],
-    minlength:[10, 'Tu comentario debe ser mas largo'],
+    required: [true, 'Has un comentario'],
+    minlength: [10, 'Tu comentario debe ser mas largo'],
   },
-},{timestamps:true});
+}, { timestamps: true });
 
-CommentSchema.index({postRefId: 2}, {unique: true});
+CommentSchema.index({ postRefId: 2 }, { unique: true });
 
 export default mongoose.model('Comment', CommentSchema);

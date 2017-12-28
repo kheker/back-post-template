@@ -6,11 +6,11 @@ import { authJwt } from '../../services/passport';
 import { authLocal } from '../../services/passport';
 
 const routes = new Router();
-routes.post('/login', authLocal ,userController.login);
-routes.post('/register',validate(userValidation.register), userController.register);
+routes.post('/login', authLocal, userController.login);
+routes.post('/register', validate(userValidation.register), userController.register);
 routes.put('/editPerfil', authJwt, validate(userValidation.perfil), userController.editPerfil);
 routes.get('/Users', userController.getAllUsers);
 routes.get('/Users/:id', userController.getUser);
-routes.get('/perfil', authJwt ,userController.perfil);
+routes.get('/perfil', authJwt, userController.perfil);
 
 export default routes;

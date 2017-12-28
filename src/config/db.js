@@ -11,7 +11,7 @@ try {
 }
 
 mongoose.connection
-  .once('open', () => {console.log('mongodb esta corriendo')})
-  .on('error', e => {
+  .once('open', () => { console.log('mongodb esta corriendo'); })
+  .on('error', (e) => {
     throw e;
   });
