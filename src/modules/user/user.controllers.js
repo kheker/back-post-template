@@ -4,14 +4,15 @@ import Proposal from '../proposal/proposal.model';
 import filteredBody from '../../utils/filteredBody';
 import { SchemaList } from '../../config/constants';
 
-export async function register(req, res) {
+export async function register(req, res, next) {
+  const body = filteredBody(req.body, SchemaList.users.create);
   try {
-    const body = filteredBody(req.body, SchemaList.users.create);
     const user = await User.create(body);
     await Proposal.create({ userId: user._id });
     return res.status(HTTPStatus.CREATED).json(user.toAuthJSON());
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ e, error: true, message: 'Error al crear usuario' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
@@ -20,39 +21,43 @@ export function login(req, res, next) {
   return next();
 }
 
-export async function perfil(req, res) {
+export async function perfil(req, res, next) {
   try {
     // const perfil = await User.findById(req.user.id);
     return res.status(HTTPStatus.OK).json(req.user.toAuthJSON());
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ error: true, message: 'Error de servidor intenta mas tarde' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
-export async function getUser(req, res) {
+export async function getUser(req, res, next) {
   try {
     const user = await User.findById(req.params.id);
     return res.status(HTTPStatus.OK).json(user);
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ error: true, message: 'Usuario no encontrado' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
-export async function getAllUsers(req, res) {
+export async function getAllUsers(req, res, next) {
   try {
     const users = await User.find();
     return res.status(HTTPStatus.OK).json(users);
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ error: true, message: 'Error al buscar usuarios' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
-export async function editPerfil(req, res) {
+export async function editPerfil(req, res, next) {
+  const body = filteredBody(req.body, SchemaList.users.create);
   try {
-    const body = filteredBody(req.body, SchemaList.users.create);
     const user = await User.findByIdAndUpdate(req.user.id, body, { new: true });
     return res.status(HTTPStatus.ACCEPTED).json(user);
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ e, error: true, message: 'Error al editar intenta de nuevo' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }

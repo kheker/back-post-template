@@ -5,38 +5,41 @@ import Comment from '../comments/comment.model';
 import filteredBody from '../../utils/filteredBody';
 import { SchemaList } from '../../config/constants';
 
-export async function addPost(req, res) {
+export async function addPost(req, res, next) {
+  const body = filteredBody(req.body, SchemaList.posts.create)
   try {
-    const body = filteredBody(req.body, SchemaList.posts.create)
     const post = await Post.createPost(body, req.user.id);
     await Comment.create({ postRefId: post._id, userRef: req.user.id });
     return res.status(HTTPStatus.CREATED).json(post);
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ e, error: true, message: 'hubo un error en el servidor intentalo de nuevo o mas tarde' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
-export async function getAll(req, res) {
+export async function getAll(req, res, next) {
   try {
     const post = await Post.find().populate('owner');
     return res.status(HTTPStatus.OK).json(post);
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ error: true, message: 'hubo un error en el servidor intentalo de nuevo o mas tarde' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
-export async function getPost(req, res) {
+export async function getPost(req, res, next) {
   try {
     const post = await Post.findById(req.params.id).populate('owner');
     return res.status(HTTPStatus.OK).json(post);
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ error: true, message: 'hubo un error en el servidor intentalo de nuevo o mas tarde' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
-export async function editPost(req, res) {
+export async function editPost(req, res, next) {
+  const body = filteredBody(req.body, SchemaList.posts.update)
   try {
-    const body = filteredBody(req.body, SchemaList.posts.update)
     const post = await Post.findById(req.params.id);
     if (post.owner.toString() !== req.user.id.toString()) {
       return res.status(HTTPStatus.UNAUTHORIZED).json({ error: true, messaje: 'No eres el propietario del post' });
@@ -46,7 +49,8 @@ export async function editPost(req, res) {
     });
     return res.status(HTTPStatus.OK).json(await post.save());
   } catch (e) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({ e, error: true, message: 'hubo un error en el servidor intentalo de nuevo o mas tarde' });
+    e.status = HTTPStatus.BAD_REQUEST;
+    return next(e);
   }
 }
 
