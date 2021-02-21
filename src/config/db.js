@@ -5,9 +5,9 @@ import constants from './constants';
 mongoose.Promise = global.Promise;
 
 try {
-  mongoose.connect(constants.MONGO_URL, { useMongoClient: true });
+  mongoose.connect(constants.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 } catch (err) {
-  mongoose.createConnection(constants.MONGO_URL, { useMongoClient: true });
+  mongoose.createConnection(constants.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 }
 
 mongoose.connection

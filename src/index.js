@@ -17,11 +17,10 @@ app.listen(constants.PORT, (err) => {
     throw err;
   } else {
     console.log(`
-    Server corriendo en el puerto : ${constants.PORT}
+    Server runing on port : ${constants.PORT}
     ---
-    corriendo en ${process.env.NODE_ENV}
+    enviroment : ${process.env.NODE_ENV}
     ---
-    mi primer backend!
     `);
   }
 });
